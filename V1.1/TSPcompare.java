@@ -73,9 +73,9 @@ public class TSPcompare
                 if(cityList.get(i).visited != true)
                 {
                     System.out.printf("1) City %d is not visited\n", i);
-                    nextCity = cityList.get(i);
+                    nextCity = cityList.get(i);                    
                     pathCheck = currentCity.distance(nextCity);
-                    System.out.printf("2) E-Distance is %s\n", pathCheck);
+                    System.out.printf("2) E-Distance is %s from %d & %d\n", pathCheck, currentCity.ID, nextCity.ID);
                     
                     if(pathCheck < shortestPath)
                     {
@@ -96,14 +96,12 @@ public class TSPcompare
                         quit = true;
                     }
                 }
-            }
-            addLine(currentCity, bestCity);
-            
+            }            
             cityPath.add(bestCity);
             
             cityList.get(bestCity.ID).visited = true;
             currentCity = bestCity;
-            System.out.printf("Current City: %d\n", currentCity.ID);
+            System.out.printf("Current City: %d\n\n", currentCity.ID);
             
             //cityPath[cityPathPos] = cityPosition;
             //cityPathPos++;
@@ -133,7 +131,7 @@ public class TSPcompare
         {
             double dx = Math.pow(this.x - that.x, 2);
             double dy = Math.pow(this.y - that.y, 2);
-            return Math.sqrt(dx + dy);
+            return Math.sqrt((dx + dy));
         }
         //Creates random double between Min and Max
         private double randomNum()
@@ -158,7 +156,8 @@ public class TSPcompare
         private final int FRAME_WIDTH = 500;
         private final int FRAME_HEIGHT = 500;
         private final Color POINT_COLOR = Color.BLUE;
-        private final Color GLINE_COLOR = Color.RED;
+        private final Color HOME_POINT = Color.GREEN;
+        private final Color LINE_COLOR = Color.BLACK;
         
         public void createMyGUI()
         {                                    
@@ -174,10 +173,7 @@ public class TSPcompare
             frame.setVisible(true);
         }
         public class DrawingPanel extends JComponent
-        {   
-            ArrayList<City> graphPoints = new ArrayList<City>();
-            ArrayList<Line> graphLines = new ArrayList<Line>();
-            
+        {                           
             double scaleX = (FRAME_WIDTH * 0.95) / 100;
             double scaleY = (FRAME_HEIGHT * 0.95) / 100;
             int dotSize = (FRAME_WIDTH + FRAME_HEIGHT) / 100;
@@ -193,35 +189,33 @@ public class TSPcompare
                     graphPoint.y = (int)(c.getY() * scaleY);
                     graphPoints.add(graphPoint);
                 }*/
-            }
-            public void addLine(City one, City two)
-            {
-                graphLines.add(new Line(one, two));
-            }
+            }            
             public void paint(Graphics g)
-            {               
-                g.setColor(POINT_COLOR);                                
-                
-                for(City c : cityList)
-                {                
-                    g.fillOval((int)(c.getX() * scaleX), (int)(c.getY() * scaleY), dotSize, dotSize);                                                            
-                }
-                for(Line l : cityPath)
+            {                                                               
+                for(int i=1; i < cityPath.size(); i++)
                 {
-                                  
-                    g.drawLine((int)l.one.x, (int)l.one.y, (int)l.two.x, (int)l.two.y);
+                    int x1, x2, y1, y2;
+                    String cityID;
+                    City city = cityPath.get(i-1);
+                    cityID = String.valueOf(city.ID);
+                    
+                    x1 = (int)(cityPath.get(i-1).x * scaleX);
+                    x2 = (int)(cityPath.get(i).x * scaleX);
+                    y1 = (int)(cityPath.get(i-1).y * scaleY);
+                    y2 = (int)(cityPath.get(i).y * scaleY);
+                    
+                    if(cityID == "0")
+                    {g.setColor(HOME_POINT);}
+                    else
+                    {g.setColor(POINT_COLOR);}
+                                        
+                    g.fillOval(x1, y1, dotSize, dotSize);
+                    
+                    g.setColor(LINE_COLOR);
+                    g.drawString(cityID, x1, y1);                                                                                              
+                    g.drawLine(x1, y1, x2, y2);                    
                 }
             }            
-            public class Line
-            {
-                public City one, two;                
-                
-                public Line(City one, City two)
-                {
-                    this.one = one;
-                    this.two = two;
-                }
-            }
         }        
     }
     public static void main(String[] key)
