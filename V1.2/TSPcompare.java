@@ -64,7 +64,7 @@ public class TSPcompare
         cityList.get(0).visited = true;
         cityPath.add(home);//Starts City path list with home
         
-        System.out.printf("%d -> ", home.ID);
+        System.out.printf("Greedy Tour:\n%d -> ", home.ID);
         
         while(quit != true)
         {
@@ -94,7 +94,7 @@ public class TSPcompare
                         //All cities visited
                         //System.out.printf("All cities visited\n");
                         shortestPath = currentCity.distance(home);
-                        quit = true;
+                        quit = true;                        
                     }
                 }
             }                                    
@@ -103,7 +103,8 @@ public class TSPcompare
             cityList.get(bestCity.ID).visited = true;
             currentCity = bestCity;
             //System.out.printf("Current City: %d\n\n", currentCity.ID);
-            System.out.printf("%d -> ", currentCity.ID);    
+            if(quit != true)
+                System.out.printf("%d -> ", currentCity.ID);    
             
             visitedCities = 0;
             totalDistance += shortestPath;
@@ -111,8 +112,13 @@ public class TSPcompare
         }
         //Finalize TSP path; add final distance
         System.out.printf("%d\n", home.ID);
-        cityPath.add(home);        
-        System.out.printf("Total Distance: %3.2f\n", totalDistance);    
+        cityPath.add(home);
+        
+        //Round Decimal to one place
+        DecimalFormat newFormat = new DecimalFormat("#.#");
+        double roundedTotal =  Double.valueOf(newFormat.format(totalDistance));
+        
+        System.out.printf("Total Cost: %3.2f\n", roundedTotal);    
     }    
     //Point class created for cities on grid
     class City
