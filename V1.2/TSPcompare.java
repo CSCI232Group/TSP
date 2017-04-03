@@ -27,8 +27,8 @@ public class TSPcompare
         for(int i = 0; i < cityNum; i++)
             cityList.add(new City(i));
         
-        for(City tp : cityList)
-            System.out.printf("%d x: %2.1f y: %2.1f\n", tp.ID, tp.x, tp.y);
+        //for(City tp : cityList)
+            //System.out.printf("%d x: %2.1f y: %2.1f\n", tp.ID, tp.x, tp.y);
         
         //Create GUI frame
         SwingUtilities.invokeLater(new Runnable() {
@@ -64,6 +64,8 @@ public class TSPcompare
         cityList.get(0).visited = true;
         cityPath.add(home);//Starts City path list with home
         
+        System.out.printf("%d -> ", home.ID);
+        
         while(quit != true)
         {
             shortestPath = Double.MAX_VALUE;
@@ -72,14 +74,14 @@ public class TSPcompare
             {
                 if(cityList.get(i).visited != true)
                 {
-                    System.out.printf("1) City %d is not visited\n", i);
+                    //System.out.printf("1) City %d is not visited\n", i);
                     nextCity = cityList.get(i);                    
                     pathCheck = currentCity.distance(nextCity);
-                    System.out.printf("2) E-Distance is %s from %d & %d\n", pathCheck, currentCity.ID, nextCity.ID);
+                    //System.out.printf("2) E-Distance is %s from %d & %d\n", pathCheck, currentCity.ID, nextCity.ID);
                     
                     if(pathCheck < shortestPath)
                     {
-                        System.out.printf("3) City %d has shortest path\n", i);
+                        //System.out.printf("3) City %d has shortest path\n", i);
                         shortestPath = pathCheck;
                         bestCity = nextCity;                        
                     }
@@ -90,22 +92,27 @@ public class TSPcompare
                     if(visitedCities == cityList.size())
                     {
                         //All cities visited
-                        System.out.printf("All cities visited\n");
+                        //System.out.printf("All cities visited\n");
                         shortestPath = currentCity.distance(home);
                         quit = true;
                     }
                 }
-            }            
+            }                                    
             cityPath.add(bestCity);
             
             cityList.get(bestCity.ID).visited = true;
             currentCity = bestCity;
-            System.out.printf("Current City: %d\n\n", currentCity.ID);
-                        
+            //System.out.printf("Current City: %d\n\n", currentCity.ID);
+            System.out.printf("%d -> ", currentCity.ID);    
+            
             visitedCities = 0;
-            totalDistance += shortestPath;                       
-        }                        
-        //return cityPath;              
+            totalDistance += shortestPath;
+            //System.out.printf("Current Distance: %3.2f\n", totalDistance);
+        }
+        //Finalize TSP path; add final distance
+        System.out.printf("%d\n", home.ID);
+        cityPath.add(home);        
+        System.out.printf("Total Distance: %3.2f\n", totalDistance);    
     }    
     //Point class created for cities on grid
     class City
@@ -198,7 +205,7 @@ public class TSPcompare
                     y1 = (int)(cityPath.get(i-1).y * scaleY);
                     y2 = (int)(cityPath.get(i).y * scaleY);
                     
-                    if(cityID == "0")
+                    if(city.ID == 0)
                     {g.setColor(HOME_POINT);}
                     else
                     {g.setColor(POINT_COLOR);}
