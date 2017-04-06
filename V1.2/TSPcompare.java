@@ -33,19 +33,12 @@ public class TSPcompare
         //Create GUI frame
         SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run(){
                 CityFrame frame = new CityFrame();
                 frame.createMyGUI();
             }});
         
-        greedyPath(cityNum);
-        /*
-        System.out.println();
-        for(int i=0; i < cityPath.length; i++)
-        {
-            System.out.print(cityPath[i]+" ");
-        }*/
+        greedyPath(cityNum);        
     }    
     public void greedyPath(int cityNum)
     {                
@@ -185,18 +178,8 @@ public class TSPcompare
             double scaleY = (FRAME_HEIGHT * 0.95) / 100;
             int dotSize = (FRAME_WIDTH + FRAME_HEIGHT) / 100;
                         
-            public DrawingPanel()
-            {
-                /*
-                for(City c : cityList)
-                {
-                //Create new variable to replicate c; add to graph array
-                    City graphPoint = c;
-                    graphPoint.y = (int)(c.getX() * scaleX);
-                    graphPoint.y = (int)(c.getY() * scaleY);
-                    graphPoints.add(graphPoint);
-                }*/
-            }            
+            public DrawingPanel(){}
+            
             public void paint(Graphics g)
             {                                                               
                 for(int i=1; i < cityPath.size(); i++)
