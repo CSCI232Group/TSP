@@ -16,14 +16,14 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-public class TSPcompare
+public class TSPcompare                                                 //Traveling Sales Problem Comparing class
 {
-    ArrayList<City> cityList = new ArrayList<City>();
-    ArrayList<City> cityPath = new ArrayList<City>();
-    ArrayList<EdgeWeight> edgeWeights = new ArrayList<EdgeWeight>();
+    ArrayList<City> cityList = new ArrayList<City>();                   //Setting up array list for each city
+    ArrayList<City> cityPath = new ArrayList<City>();                   //Setting up array list for each path
+    ArrayList<EdgeWeight> edgeWeights = new ArrayList<EdgeWeight>();    //Edge weights are given by the normal Euclidean distance between pairs of points.
     ArrayList<EdgeWeight> mst = new ArrayList<EdgeWeight>();    
     
-    public TSPcompare(int cityNum)
+    public TSPcompare(int cityNum)                                      // creating the next city for the path
     {                
         for(int i = 0; i < cityNum; i++)
             cityList.add(new City(i));
@@ -32,7 +32,7 @@ public class TSPcompare
             //System.out.printf("%d x: %2.1f y: %2.1f\n", tp.ID, tp.x, tp.y);
         
         //Create GUI frame
-        SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {                     // Creating the window for the program to run in
             @Override
             public void run(){
                 CityFrame frame = new CityFrame();
@@ -42,7 +42,7 @@ public class TSPcompare
         //greedyPath();
         twiceAroundTree();
     }    
-    public void greedyPath()
+    public void greedyPath()                                            //Greedy tour set up
     {                
         City home = cityList.get(0);//Gets City 0 from cityList
         City currentCity = home;
@@ -53,17 +53,17 @@ public class TSPcompare
         double shortestPath;
         double pathCheck;
         
-        int visitedCities = 0;        
+        int visitedCities = 0;                                          //Starting place for travel
         
-        boolean quit = false;
+        boolean quit = false;                                         
         cityList.get(0).visited = true;
         cityPath.add(home);//Starts City path list with home
         
-        System.out.printf("\nGreedy Tour:\n%d -> ", home.ID);
+        System.out.printf("\nGreedy Tour:\n%d -> ", home.ID);          // Indicating that greedy tour has started
         
         while(quit != true)
         {
-            shortestPath = Double.MAX_VALUE;
+            shortestPath = Double.MAX_VALUE;                            // After set up we are now checking to see the next place to go to
             
             for(int i = 0; i < cityList.size(); i++)
             {
@@ -113,7 +113,7 @@ public class TSPcompare
         DecimalFormat newFormat = new DecimalFormat("#.#");
         double roundedTotal =  Double.valueOf(newFormat.format(totalDistance));
         
-        System.out.printf("Total Cost: %3.2f\n", roundedTotal);
+        System.out.printf("Total Cost: %3.2f\n", roundedTotal);                     
         System.out.printf("Time to find: %s sec\n", '?');
     }
     public void twiceAroundTree()
@@ -267,7 +267,7 @@ public class TSPcompare
             frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);        
             frame.setVisible(true);
         }
-        public class DrawingPanel extends JComponent
+        public class DrawingPanel extends JComponent                        //This is our windows specitications 
         {                           
             double scaleX = (FRAME_WIDTH * 0.95) / 100;
             double scaleY = (FRAME_HEIGHT * 0.95) / 100;
