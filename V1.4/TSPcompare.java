@@ -21,6 +21,7 @@ public class TSPcompare
     ArrayList<City> cityList = new ArrayList<City>();
     ArrayList<City> cityPath = new ArrayList<City>();
     ArrayList<EdgeWeight> edgeWeights = new ArrayList<EdgeWeight>();
+    ArrayList<EdgeWeight> mst = new ArrayList<EdgeWeight>();    
     
     public TSPcompare(int cityNum)
     {                
@@ -38,10 +39,10 @@ public class TSPcompare
                 frame.createMyGUI();
             }});
         
-        greedyPath(cityNum);
+        //greedyPath();
         twiceAroundTree();
     }    
-    public void greedyPath(int cityNum)
+    public void greedyPath()
     {                
         City home = cityList.get(0);//Gets City 0 from cityList
         City currentCity = home;
@@ -150,6 +151,31 @@ public class TSPcompare
             weight = edgeWeights.get(k).getWeight();
             System.out.printf("%d, %d: %f\n", to.ID, from.ID, weight);
         }//END DEBUGGING
+        
+        /* MST Building Section */
+        while(!edgeWeights.isEmpty())
+        {        
+            EdgeWeight current = edgeWeights.get(0);
+            
+            
+            //Debugging
+            System.out.printf("%f\n", current.getWeight());
+                        
+            edgeWeights.remove(0);
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /* MST Building Section */        
     }
     //Point class created for cities on grid
     class City
