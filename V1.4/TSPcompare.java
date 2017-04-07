@@ -1,3 +1,4 @@
+
 /*
  * @author Ian Hecker
  * CSCI232, Lab3
@@ -22,11 +23,22 @@ public class TSPcompare                                                 //Travel
     ArrayList<City> cityPath = new ArrayList<City>();                   //Setting up array list for each path
     ArrayList<EdgeWeight> edgeWeights = new ArrayList<EdgeWeight>();    //Edge weights are given by the normal Euclidean distance between pairs of points.
     ArrayList<EdgeWeight> mst = new ArrayList<EdgeWeight>();    
-    
+    public  class Stopwatch 											//calculating runtime
+    {
+    	private final long start;
+    	public Stopwatch()
+    	{ start = System.currentTimeMillis(); }							//start time when called
+    	public double elapsedTime()
+    	{
+    		long now = System.currentTimeMillis();						//how much time since start
+    		return (now - start)/1000.0;
+    	}
+    }
+
     public TSPcompare(int cityNum)                                      // creating the next city for the path
     {                
         for(int i = 0; i < cityNum; i++)
-            cityList.add(new City(i));
+            cityList.add(new City(i));									//add random city coordinates to citylist
         
         //for(City tp : cityList)
             //System.out.printf("%d x: %2.1f y: %2.1f\n", tp.ID, tp.x, tp.y);
@@ -34,30 +46,33 @@ public class TSPcompare                                                 //Travel
         //Create GUI frame
         SwingUtilities.invokeLater(new Runnable() {                     // Creating the window for the program to run in
             @Override
-            public void run(){
+            public void run(){											//create new frame to show path
                 CityFrame frame = new CityFrame();
                 frame.createMyGUI();
             }});
         
-        //greedyPath();
+        greedyPath();
+        
+        
         twiceAroundTree();
     }    
     public void greedyPath()                                            //Greedy tour set up
     {                
-        City home = cityList.get(0);//Gets City 0 from cityList
-        City currentCity = home;
+    	Stopwatch stop=new Stopwatch();
+        City home = cityList.get(0);									//Gets City 0 from cityList
+        City currentCity = home;										//Starting location
         City nextCity = null;
         City bestCity = null;
         
-        double totalDistance = 0;//Total Euclidean distance traveled
+        double totalDistance = 0;										//Total Euclidean distance traveled
         double shortestPath;
         double pathCheck;
         
-        int visitedCities = 0;                                          //Starting place for travel
+        int visitedCities = 0;                              
         
         boolean quit = false;                                         
         cityList.get(0).visited = true;
-        cityPath.add(home);//Starts City path list with home
+        cityPath.add(home);												//Starts City path list with home
         
         System.out.printf("\nGreedy Tour:\n%d -> ", home.ID);          // Indicating that greedy tour has started
         
@@ -67,54 +82,54 @@ public class TSPcompare                                                 //Travel
             
             for(int i = 0; i < cityList.size(); i++)
             {
-                if(cityList.get(i).visited != true)
+                if(cityList.get(i).visited != true)						//check city has not been used
                 {
                     //System.out.printf("1) City %d is not visited\n", i);
-                    nextCity = cityList.get(i);                    
-                    pathCheck = currentCity.distance(nextCity);
+                    nextCity = cityList.get(i);                    		//move to next city
+                    pathCheck = currentCity.distance(nextCity);			//keep track of path length
                     //System.out.printf("2) E-Distance is %s from %d & %d\n", pathCheck, currentCity.ID, nextCity.ID);
                     
                     if(pathCheck < shortestPath)
                     {
                         //System.out.printf("3) City %d has shortest path\n", i);
-                        shortestPath = pathCheck;
+                        shortestPath = pathCheck;						//make current path shortest if it is shorter than current shortest
                         bestCity = nextCity;                        
                     }
                 }
                 else
                 {
-                    visitedCities++;
+                    visitedCities++;									//keep track of how many cities are visited
                     if(visitedCities == cityList.size())
                     {
                         //All cities visited
                         //System.out.printf("All cities visited\n");
-                        shortestPath = currentCity.distance(home);
+                        shortestPath = currentCity.distance(home);		//path from current city back to first city
                         quit = true;                        
                     }
                 }
             }                                    
-            cityPath.add(bestCity);
+            cityPath.add(bestCity);										//add city from shortest path
             
-            cityList.get(bestCity.ID).visited = true;
+            cityList.get(bestCity.ID).visited = true;					//city is visited
             currentCity = bestCity;
             //System.out.printf("Current City: %d\n\n", currentCity.ID);
             if(quit != true)
                 System.out.printf("%d -> ", currentCity.ID);    
             
             visitedCities = 0;
-            totalDistance += shortestPath;
+            totalDistance += shortestPath; 								//add path to total distance
             //System.out.printf("Current Distance: %3.2f\n", totalDistance);
         }
-        //Finalize TSP path; add final distance
+        																//Finalize TSP path; add final distance
         System.out.printf("%d\n", home.ID);
-        cityPath.add(home);
+        cityPath.add(home);												//complete cycle
         
-        //Round Decimal to one place
+        																//Round Decimal to one place
         DecimalFormat newFormat = new DecimalFormat("#.#");
         double roundedTotal =  Double.valueOf(newFormat.format(totalDistance));
-        
+        																//print out cost and time
         System.out.printf("Total Cost: %3.2f\n", roundedTotal);                     
-        System.out.printf("Time to find: %s sec\n", '?');
+        System.out.printf("Time to find: %s sec\n", stop.elapsedTime());
     }
     public void twiceAroundTree()
     {
@@ -186,20 +201,20 @@ public class TSPcompare                                                 //Travel
         
         public City(int num)
         {
-            this.x = randomNum();
+            this.x = randomNum();										//provide random coordinates for city
             this.y = randomNum();
             this.visited = false;
             this.ID = num;
         }
         public double distance(City that)
-        {
+        {																//return distance between this city and another
             double dx = Math.pow(this.x - that.x, 2);
             double dy = Math.pow(this.y - that.y, 2);
             return Math.sqrt((dx + dy));
         }
         //Creates random double between Min and Max
         private double randomNum()
-        {
+        {																//return a random number within 
             double min, max, random, num;
             
             min = 0; max = 100;                       
@@ -219,10 +234,10 @@ public class TSPcompare                                                 //Travel
     public class EdgeWeight implements Comparable<EdgeWeight>
     {
         City to, from;
-        double weight;
+        double weight;													//distance between cities
         
         public EdgeWeight(City to, City from)
-        {
+        {																
             this.to = to;
             this.from = from;
             
@@ -233,12 +248,8 @@ public class TSPcompare                                                 //Travel
         
         public City getTo()     {return to;}
         public City getFrom()   {return from;}    
-        
-        public int compare(EdgeWeight that)
-        {
-            return Double.compare(this.weight, that.weight);
-        }
-
+        	
+        																//return which weight is larger
         @Override
         public int compareTo(EdgeWeight that)
         {
@@ -260,7 +271,7 @@ public class TSPcompare                                                 //Travel
             JFrame frame = new JFrame("CS232 TSP");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);                       
             
-            //Add points to JFrame
+            																//Add points to JFrame
             frame.getContentPane().add(new DrawingPanel());
             
             setBackground(Color.WHITE);
@@ -284,7 +295,7 @@ public class TSPcompare                                                 //Travel
                     City city = cityPath.get(i-1);
                     cityID = String.valueOf(city.ID);
                     
-                    x1 = (int)(cityPath.get(i-1).x * scaleX);
+                    x1 = (int)(cityPath.get(i-1).x * scaleX);				//get coordinates of neighbors
                     x2 = (int)(cityPath.get(i).x * scaleX);
                     y1 = (int)(cityPath.get(i-1).y * scaleY);
                     y2 = (int)(cityPath.get(i).y * scaleY);
@@ -293,12 +304,12 @@ public class TSPcompare                                                 //Travel
                     {g.setColor(HOME_POINT);}
                     else
                     {g.setColor(POINT_COLOR);}
-                                        
+                                        									//draw points
                     g.fillOval(x1, y1, dotSize, dotSize);
                     
                     g.setColor(LINE_COLOR);
-                    g.drawString(cityID, x1, y1);                                                                                              
-                    g.drawLine(x1, y1, x2, y2);                    
+                    g.drawString(cityID, x1, y1);      						//write city ID                                                                                        
+                    g.drawLine(x1, y1, x2, y2);        						//draw path between cities            
                 }
             }            
         }        
