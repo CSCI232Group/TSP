@@ -1,0 +1,9 @@
+CSCI 232 
+Lab 3 Analysis
+
+Besides, your code, you could provide an analysis of the two methods: 
+which algorithm is the best on various graph sizes? How many vertices can each method handle?
+
+As for which algorithm will be best when dealing with varying graph sizes, greedy will be able to handle a lot more than twice-around-the-tree.
+
+For Greedy when went as far as 20,000 with no problems. However, with twice-around-the-tree we cannot go as high, only into the hundred.
