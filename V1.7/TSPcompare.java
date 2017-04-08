@@ -193,78 +193,101 @@ public class TSPcompare                                                 //Travel
                 City check_a;
                 City check_b;
                 
-                Node toNext = to.next;
-                Node fromNext = from.next;
-                Node checkANext, checkBNext;
+                Node toNext = null;
+                Node fromNext = null;
+                Node checkANext = null;
+                Node checkBNext = null;
                 
                 boolean makesLoop = false;                                
                 
+                breakpoint:
                 for(int j = 0; j < mst.size(); j++)
-                {
+                {                   
+                    System.out.printf("Current iteration %d\n", j);
                     check = mst.get(j);                 
                     check_a = check.getTo();
                     check_b = check.getFrom();                    
                     
+                    toNext = to.next;
+                    fromNext = from.next;
                     checkANext = check_a.next;
                     checkBNext = check_b.next;
                     
+                    
+                    System.out.printf("To: %d\n", to.ID);
+                    System.out.printf("From: %d\n", from.ID);
+                    System.out.printf("Check_a: %d\n", check_a.ID);
+                    System.out.printf("Check_b: %d\n", check_b.ID);
+                    
                     if(to == check_a)
                     {                        
-                        while(toNext != null && checkBNext != null)
+                        while(toNext != null && checkANext != null)
                         {
-                            if(toNext.city.ID == checkBNext.city.ID)
+                            System.out.printf("1) %d & %d\n",toNext.city.ID ,checkANext.city.ID);
+                            if(toNext.city.ID == checkANext.city.ID)
                             {
+                                System.out.printf("1) Entered If\n");
                                 makesLoop = true;
-                                break;
+                                break breakpoint;
                             }
                             toNext = toNext.next;
-                            checkBNext = checkBNext.next;
+                            checkANext = checkANext.next;
                         }
+                        System.out.printf("1) Exit while-loop\n");
                     }
                     if(to == check_b)
                     {
-                        while(toNext != null && checkANext != null)
+                        while(toNext != null && checkBNext != null)
                         {
-                            if(toNext.city.ID == checkANext.city.ID)
+                            System.out.printf("2) %d & %d\n",toNext.city.ID ,checkBNext.city.ID);
+                            if(toNext.city.ID == checkBNext.city.ID)
                             {
+                                System.out.printf("2) Entered If\n");
                                 makesLoop = true;
-                                break;
+                                break breakpoint;
                             }
                             toNext = toNext.next;
-                            checkANext = checkANext.next;
+                            checkBNext = checkBNext.next;
                         }
+                        System.out.printf("2) Exit while-loop\n");
                     }
                     if(from == check_a)
+                    {                        
+                        while(fromNext != null && checkANext != null)
+                        {
+                            System.out.printf("3) %d & %d\n",fromNext.city.ID ,checkANext.city.ID);
+                            if(fromNext.city.ID == checkANext.city.ID)
+                            {
+                                System.out.printf("3) Entered If\n");
+                                makesLoop = true;
+                                break breakpoint;
+                            }
+                            fromNext = fromNext.next;
+                            checkANext = checkANext.next;
+                        }
+                        System.out.printf("3) Exit while-loop\n");
+                    }
+                    if(from == check_b)
                     {
                         while(fromNext != null && checkBNext != null)
                         {
+                            System.out.printf("4) %d & %d\n",fromNext.city.ID ,checkBNext.city.ID);
                             if(fromNext.city.ID == checkBNext.city.ID)
                             {
+                                System.out.printf("4) Entered If\n");
                                 makesLoop = true;
-                                break;
+                                break breakpoint;
                             }
                             fromNext = fromNext.next;
                             checkBNext = checkBNext.next;
                         }
-                    }
-                    if(from == check_b)
-                    {
-                        while(fromNext != null && checkANext != null)
-                        {
-                            if(fromNext.city.ID == checkANext.city.ID)
-                            {
-                                makesLoop = true;
-                                break;
-                            }
-                            fromNext = fromNext.next;
-                            checkANext = checkANext.next;
-                        }
+                        System.out.printf("4) Exit while-loop\n");
                     }                                            
-                }
+                }                
                 
                 toNext = to.next;
                 fromNext = from.next;
-                if(!makesLoop)
+                if(makesLoop == false)
                 {
                     System.out.printf("Added a branch!\n");
                     mst.add(current);
@@ -272,7 +295,7 @@ public class TSPcompare                                                 //Travel
                     System.out.printf("%d - %d : %f\n", current.getTo().ID, current.getFrom().ID, current.getWeight());
                     
                     edges++;
-                    System.out.printf("Edges are: %d\n", edges);
+                    System.out.printf("Edges are: %d\n\n", edges);
                     
                     for( ; ; )
                     {
