@@ -187,32 +187,31 @@ public class TSPcompare                                                 //Travel
                 EdgeWeight current = edgeWeights.get(i);
                 
                 to = current.getTo();
-                from = current.getFrom();
-                
-                EdgeWeight check;
-                City check_a;
-                City check_b;
+                from = current.getFrom();                                
                 
                 Node toNext = to.next;
                 Node fromNext = from.next;                                               
                 
                 boolean makesLoop = false;                                                                
                 
-                breakpoint:
+                int loops = 0;
+                
+                //breakpoint:
                 while(toNext != null)
-                {
-                    System.out.printf("toNext.ID: %d fromNext.ID: %d\n", toNext.city.ID, fromNext.city.ID);
+                {                    
                     while(fromNext!= null)
                     {
-                        System.out.printf("\n");
+                        System.out.printf("While Loop Iteration: %d\n", loops);
+                        System.out.printf("toNext.ID: %d fromNext.ID: %d\n", toNext.city.ID, fromNext.city.ID);
                         if(toNext.city.ID == fromNext.city.ID)
                         {
                             makesLoop = true;
-                            break breakpoint;
+                            break; //breakpoint;
                         }
                         fromNext = fromNext.next;
                     }
                     toNext = toNext.next;
+                    loops++;
                 }
                 
                 
@@ -223,7 +222,7 @@ public class TSPcompare                                                 //Travel
                 fromNext = from.next;
                 if(makesLoop == false)
                 {
-                    System.out.printf("Added a branch!\n");
+                    System.out.printf("\nAdded a branch!\n");
                     mst.add(current);
                     
                     System.out.printf("%d - %d : %f\n", current.getTo().ID, current.getFrom().ID, current.getWeight());
@@ -231,28 +230,56 @@ public class TSPcompare                                                 //Travel
                     edges++;
                     System.out.printf("Edges are: %d\n\n", edges);
                     
-                    for( ; ; )
-                    {
+                    while(true)
+                    {                        
                         if(toNext == null)
-                            {to.next = new Node(from);
+                            {System.out.printf("Added new Neighbor of %d: %d\n", from.ID, to.ID);
+                            to.next = new Node(from);
                             break;}
                         
-                        else if(toNext != null)
-                            {toNext = toNext.next;}
+                        if(toNext != null)
+                            {System.out.printf("Value of toNext: %d\n", toNext.city.ID);
+                            toNext = toNext.next;}
                     }
-                    for( ; ; )
-                    {
+                    while(true)
+                    {                        
                         if(fromNext == null)
-                            {from.next = new Node(to);
+                            {System.out.printf("Added new Neighbor of %d: %d\n", from.ID,to.ID);
+                            from.next = new Node(to);
                             break;}
                         
-                        else if(fromNext != null)
-                            {fromNext = fromNext.next;}
+                        if(fromNext != null)
+                            {System.out.printf("Value of fromNext: %d\n", fromNext.city.ID);
+                            fromNext = fromNext.next;}
                     }
                 }
                 makesLoop = false;
                 if(edges >= cityList.size() - 1)
-                {return;}
+                {
+                    cityList.get(0).next = new Node(cityList.get(1));
+                    Node test = cityList.get(0).next;
+                    test.next = new Node(new City(69));
+                    Node test2 = test.next;
+                    test2.next = new Node(new City(84));
+                    
+                            
+                    Node next;
+                    for(City c : cityList)
+                    {
+                        next = c.next;
+                        System.out.printf("%d: ", c.ID);
+                        while(true)
+                        {                            
+                            if(next == null) {break;}
+                            System.out.printf("%d - > ", next.city.ID);
+                            next = next.next;
+                        }
+                        System.out.printf("\n");
+                    }
+                    
+                    
+                    
+                    return;}
             }
         }                        
         /* MST Building Section */        
