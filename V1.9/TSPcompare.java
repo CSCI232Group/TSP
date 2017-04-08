@@ -326,30 +326,40 @@ public class TSPcompare                                                 //Travel
             
             public void paint(Graphics g)
             {                                                               
-                for(int i=0; i < cityPath.size(); i++)
+                for(int i = 1; i < cityPath.size(); i++)
                 {
                     int x1, x2, y1, y2;
                     String cityID;
-                    //City city = cityPath.get(i-1);
-                    //cityID = String.valueOf(city.ID);
+                    City city = cityPath.get(i-1);
+                    cityID = String.valueOf(city.ID);
+                    
+                    x1 = (int)(cityPath.get(i-1).x * scaleX);				//get coordinates of neighbors
+                    x2 = (int)(cityPath.get(i).x * scaleX);
+                    y1 = (int)(cityPath.get(i-1).y * scaleY);
+                    y2 = (int)(cityPath.get(i).y * scaleY);
+                    
+                    if(city.ID == 0)
+                    {g.setColor(HOME_POINT);}
+                    else
+                    {g.setColor(POINT_COLOR);}
+                                        									//draw points
+                    g.fillOval(x1, y1, dotSize, dotSize);                    
+                    
+                    g.setColor(LINE_COLOR);
+                    g.drawString(cityID, x1, y1);     						//write city ID                                                                                                            
+                    g.drawLine(x1, y1, x2, y2);        						//draw path between cities            
+                }
+                for(int i = 0; i < mst.size(); i++)
+                {
+                    int x1, x2, y1, y2;
                     
                     x1 = (int)(cityPath.get(i).to.x * scaleX);				//get coordinates of neighbors
                     x2 = (int)(cityPath.get(i).from.x * scaleX);
                     y1 = (int)(cityPath.get(i).to.y * scaleY);
                     y2 = (int)(cityPath.get(i).from.y * scaleY);
                     
-                    //if(city.ID == 0)
-                    //{g.setColor(HOME_POINT);}
-                    //else
-                    //{g.setColor(POINT_COLOR);}
-                                        									//draw points
-                    g.fillOval(x1, y1, dotSize, dotSize);
-                    g.fillOval(x2, y2, dotSize, dotSize);
-                    
-                    g.setColor(LINE_COLOR);
-                    g.drawString(cityPath.get(i).to.ID+"", x1, y1);     						//write city ID                                                                                        
-                    g.drawString(cityPath.get(i).from.ID+"", x2, y2);
-                    g.drawLine(x1, y1, x2, y2);        						//draw path between cities            
+                    g.setColor(Color.CYAN);
+                    g.drawLine(x1, y1, x2, y2);
                 }
             }            
         }        
