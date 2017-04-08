@@ -196,30 +196,25 @@ public class TSPcompare                                                 //Travel
                 
                 int loops = 0;
                 
-                //breakpoint:
+                breakpoint:
                 while(toNext != null)
-                {                    
-                    while(fromNext!= null)
+                {           
+                    while(fromNext != null)
                     {
-                        System.out.printf("While Loop Iteration: %d\n", loops);
+                        //System.out.printf("While Loop Iteration: %d\n", loops);
+                        //loops++;
                         System.out.printf("toNext.ID: %d fromNext.ID: %d\n", toNext.city.ID, fromNext.city.ID);
                         if(toNext.city.ID == fromNext.city.ID)
                         {
                             makesLoop = true;
-                            break; //breakpoint;
+                            break breakpoint;
                         }
                         fromNext = fromNext.next;
                     }
+                    fromNext = from.next;
                     toNext = toNext.next;
-                    loops++;
                 }
                 
-                
-                
-                
-                
-                toNext = to.next;
-                fromNext = from.next;
                 if(makesLoop == false)
                 {
                     System.out.printf("\nAdded a branch!\n");
@@ -230,40 +225,28 @@ public class TSPcompare                                                 //Travel
                     edges++;
                     System.out.printf("Edges are: %d\n\n", edges);
                     
-                    while(true)
-                    {                        
-                        if(toNext == null)
-                            {System.out.printf("Added new Neighbor of %d: %d\n", from.ID, to.ID);
-                            to.next = new Node(from);
-                            break;}
+                                            
+                        if(to.next == null)
+                            {to.next = new Node(from);
+                            to.last = to.next;}
                         
-                        if(toNext != null)
-                            {System.out.printf("Value of toNext: %d\n", toNext.city.ID);
-                            toNext = toNext.next;}
-                    }
-                    while(true)
-                    {                        
-                        if(fromNext == null)
-                            {System.out.printf("Added new Neighbor of %d: %d\n", from.ID,to.ID);
-                            from.next = new Node(to);
-                            break;}
+                        else if(to.next != null)
+                            {to.last.next = new Node(from);
+                            to.last = to.last.next;}
                         
-                        if(fromNext != null)
-                            {System.out.printf("Value of fromNext: %d\n", fromNext.city.ID);
-                            fromNext = fromNext.next;}
-                    }
+                        if(from.next == null)
+                            {from.next = new Node(to);
+                            from.last = from.next;}
+                        
+                        else if(from.next != null)
+                            {from.last.next = new Node(to);
+                            from.last = from.last.next;}
+                        
                 }
                 makesLoop = false;
                 if(edges >= cityList.size() - 1)
-                {
-                    cityList.get(0).next = new Node(cityList.get(1));
-                    Node test = cityList.get(0).next;
-                    test.next = new Node(new City(69));
-                    Node test2 = test.next;
-                    test2.next = new Node(new City(84));
-                    
-                            
-                    Node next;
+                {                                                                    
+                    Node next;     
                     for(City c : cityList)
                     {
                         next = c.next;
@@ -291,6 +274,7 @@ public class TSPcompare                                                 //Travel
         public boolean visited;        
         public int ID;
         public Node next;
+        public Node last;
         
         public City(int num)
         {
