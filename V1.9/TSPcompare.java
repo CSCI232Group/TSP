@@ -21,7 +21,7 @@ import javax.swing.SwingUtilities;
 public class TSPcompare                                                 //Traveling Sales Problem Comparing class
 {
     ArrayList<City> cityList = new ArrayList<City>();                   //Setting up array list for each city
-    ArrayList<EdgeWeight> cityPath = new ArrayList<EdgeWeight>();                   //Setting up array list for each path
+    ArrayList<City> cityPath = new ArrayList<City>();                   //Setting up array list for each path
     ArrayList<EdgeWeight> edgeWeights = new ArrayList<EdgeWeight>();    //Edge weights are given by the normal Euclidean distance between pairs of points.
     ArrayList<EdgeWeight> mst = new ArrayList<EdgeWeight>();    
     public  class Stopwatch 											//calculating runtime
@@ -54,7 +54,7 @@ public class TSPcompare                                                 //Travel
                 frame.createMyGUI();
             }});
         
-        //greedyPath();
+        greedyPath();
         
         
         twiceAroundTree();
@@ -75,7 +75,7 @@ public class TSPcompare                                                 //Travel
         
         boolean quit = false;                                         
         cityList.get(0).visited = true;
-       // cityPath.add(home);												//Starts City path list with home
+        cityPath.add(home);												//Starts City path list with home
         
         System.out.printf("\nGreedy Tour:\n%d -> ", home.ID);          // Indicating that greedy tour has started
         
@@ -111,7 +111,7 @@ public class TSPcompare                                                 //Travel
                     }
                 }
             }                                    
-            //cityPath.add(bestCity);										//add city from shortest path
+            cityPath.add(bestCity);										//add city from shortest path
             
             cityList.get(bestCity.ID).visited = true;					//city is visited
             currentCity = bestCity;
@@ -125,7 +125,7 @@ public class TSPcompare                                                 //Travel
         }
         																//Finalize TSP path; add final distance
         System.out.printf("%d\n", home.ID);
-     //   cityPath.add(home);												//complete cycle
+        cityPath.add(home);												//complete cycle
         
         																//Round Decimal to one place
         DecimalFormat newFormat = new DecimalFormat("#.#");
@@ -225,9 +225,8 @@ public class TSPcompare                                                 //Travel
         
         }
        ArrayList<EdgeWeight> c=trees.get(0).list();
-       for (int i=0;i<c.size();i++){
-    	   System.out.println(c.get(i).to.ID);
-    	   cityPath.add(c.get(i));
+       for (int i=0;i<c.size();i++){    	   
+    	   mst.add(c.get(i));
        }
     }
     //Point class created for cities on grid
